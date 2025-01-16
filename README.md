@@ -70,7 +70,7 @@ Line chart example for authoring tool:
     "title": {
         "display": true,
         "text": "Custom Chart Title"
-    }
+    },
     "animation": {
 	"duration": 2000,
 	"easing": "easeOutQuart"
