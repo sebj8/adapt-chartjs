@@ -71,10 +71,10 @@ Line chart example for authoring tool:
         "display": true,
         "text": "Custom Chart Title"
     }
-	"animation": {
-		"duration": 2000,
-		"easing": "easeOutQuart"
-	}
+    "animation": {
+	"duration": 2000,
+	"easing": "easeOutQuart"
+    }
 }
 ```
 
