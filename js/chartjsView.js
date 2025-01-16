@@ -1,12 +1,14 @@
 
     import Adapt from 'core/js/adapt';
     import ComponentView from 'core/js/views/componentView';
-    import Chart from 'libraries/chart.min'
+    import Chart from 'libraries/chart.umd'
     
     export default class ChartJSView extends ComponentView {
   
         preRender() {
             this.listenTo(this.model, 'change:data', this.onDataChanged);
+            if(this.model.get("_onScreen"))
+            this.listenTo(Adapt, 'componentView:animationStart', this.onScreenAnimationStart);
         }
 
         postRender() {
@@ -37,7 +39,7 @@
         }
 
         async setupChart () {
-            var ctx = $("#myChart" + this.model.get('_id'));
+            this.ctx = $("#myChart" + this.model.get('_id'));
 
             await Promise.all(this.model.get('data').datasets.map(async (dataset) => {
                 if (dataset.dataURL) {
@@ -45,24 +47,39 @@
                 }
             }));
 
-            var chart = new Chart(ctx, {
+            this.chart = new Chart(this.ctx, {
                 type: this.model.get('_chartType'),
                 data: await this.model.get('data'),
                 options: this.model.get('_options')
             });
 
+            if(this.model.get("_onScreen"))
+            this.chart.update('hide');
+            
             this.setReadyStatus();
 
-            this.model.set("_chart", chart);
+            this.model.set("_chart", this.chart);
         }
         
         onDataChanged() {
-            var chart = this.model.get("_chart");
-            console.log(chart)
+            this.chart = this.model.get("_chart");
 
-            if (chart) {
-                chart.update();
+            if (this.chart) {
+                this.chart.update();
+            }
+        }
+
+        onScreenAnimationStart(event) {
+            this.chart = this.model.get("_chart");
+
+            if(event.$el.attr('data-adapt-id') === this.model.get('_id')) {
+                if(this.chart) {
+                this.chart.reset();
+                this.chart.update('show');
+                }
             }
         }
 
     }
+
+    
