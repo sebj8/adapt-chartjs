@@ -39,7 +39,8 @@
         }
 
         async setupChart () {
-            this.ctx = $("#myChart" + this.model.get('_id'));
+
+            var ctx = $("#myChart" + this.model.get('_id'));
 
             await Promise.all(this.model.get('data').datasets.map(async (dataset) => {
                 if (dataset.dataURL) {
@@ -47,36 +48,44 @@
                 }
             }));
 
-            this.chart = new Chart(this.ctx, {
+            var chart = new Chart(ctx, {
                 type: this.model.get('_chartType'),
                 data: await this.model.get('data'),
                 options: this.model.get('_options')
             });
+            this.model.set("_chart", chart);
 
             if(this.model.get("_onScreen"))
-            this.chart.update('hide');
+            this.hideChart();
             
             this.setReadyStatus();
 
-            this.model.set("_chart", this.chart);
         }
         
         onDataChanged() {
-            this.chart = this.model.get("_chart");
+            var chart = this.model.get("_chart");
 
-            if (this.chart) {
-                this.chart.update();
+            if (chart) {
+                chart.update();
             }
         }
 
+        hideChart() {
+            var chart = this.model.get("_chart");
+            if (chart) {
+                chart.update('hide');
+            }
+        }
+        
         onScreenAnimationStart(event) {
-            this.chart = this.model.get("_chart");
+            var chart = this.model.get("_chart");
 
             if(event.$el.attr('data-adapt-id') === this.model.get('_id')) {
-                if(this.chart) {
-                this.chart.reset();
-                this.chart.update('show');
+                if(chart) {
+                chart.reset();
+                chart.update('show');
                 }
+                this.stopListening(Adapt, 'componentView:animationStart');
             }
         }
 
