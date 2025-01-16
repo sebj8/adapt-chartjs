@@ -30,6 +30,8 @@ guide the learner’s interaction with the component.
 
 and/or 
 
+**_onScreen** (bool): if enabled, will only start animating the chart when it is on screen.
+
 **dataURL** (URL): URL of a data file to load. Note: the format of this file must be a raw json array of numbers, the same as if you were simply typing it in, e.g. "[65, 59, 90, 81, 56, 55, 40]"
 
 Line chart example for authoring tool:
@@ -69,6 +71,10 @@ Line chart example for authoring tool:
         "display": true,
         "text": "Custom Chart Title"
     }
+	"animation": {
+		"duration": 2000,
+		"easing": "easeOutQuart"
+	}
 }
 ```
 
