@@ -55,7 +55,7 @@
             });
             this.model.set("_chart", chart);
 
-            if(this.model.get("_onScreen"))
+            if(this.model.get("_onScreen") == true)
             this.hideChart();
             
             this.setReadyStatus();
@@ -82,8 +82,8 @@
 
             if(event.$el.attr('data-adapt-id') === this.model.get('_id')) {
                 if(chart) {
-                chart.reset();
-                chart.update('show');
+                    chart.reset();
+                    chart.update('show');
                 }
                 this.stopListening(Adapt, 'componentView:animationStart');
             }
